@@ -11,5 +11,7 @@ router.get('/users', UserController.index);
 router.get('/users/:id', UserController.findUserById);
 router.put('/users', UserController.edit);
 router.delete('/users/:id', UserController.delete);
+router.post('/recoverpassword', UserController.recoverPassword);
+router.post('/changepassword', UserController.changePassword);
 
 module.exports = router;

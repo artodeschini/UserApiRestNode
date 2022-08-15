@@ -1,4 +1,5 @@
 const User = require('../model/User');
+const PasswordToken = require('../model/PasswordToken');
 
 class UserController {
 
@@ -83,6 +84,36 @@ class UserController {
         } else {
             res.status(406);
             res.json(result);
+        }
+    }
+
+    async recoverPassword(req, res) {
+        let email = req.body.email;
+
+        let result = await PasswordToken.create(email);
+
+        if (result.status) {
+            res.status(200);
+            res.send(result.token + '');
+        } else {
+            res.status(406);
+            res.send(result.error);
+        }
+    }
+
+    async changePassword(req, res) {
+        let token = req.body.token;
+        let password = req.body.password;
+
+        let isValid = await PasswordToken.validate(token);
+
+        if (isValid.status) {
+            await User.changePassword(password, isValid.token.user_id);
+            res.status(200);
+            res.send('senha alterada');
+        } else {
+            res.status(406);
+            res.send({ msg: 'Token invalido'});
         }
     }
 }
