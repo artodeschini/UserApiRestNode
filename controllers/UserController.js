@@ -1,5 +1,8 @@
 const User = require('../model/User');
 const PasswordToken = require('../model/PasswordToken');
+const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+const secret = require('../middlewere/screct'); 
 
 class UserController {
 
@@ -109,11 +112,35 @@ class UserController {
 
         if (isValid.status) {
             await User.changePassword(password, isValid.token.user_id);
+            await PasswordToken.se
             res.status(200);
             res.send('senha alterada');
         } else {
             res.status(406);
             res.send({ msg: 'Token invalido'});
+        }
+    }
+
+    async login(req, res) {
+        let {email, password} = req.body;
+
+        const user = await this.findByEmail(email);
+
+        if (user != undefined) {
+            let result = await bcrypt.compare(password, user.password);
+
+            if (result) {
+                let token = jwt.sign({emai: user.email, role: user.role}, secret);
+                res.status(200);
+                res.json({'token': token});
+
+            } else {
+                res.status(401);
+                res.send({msg: 'login invalido'});
+            }
+
+        } else {
+            
         }
     }
 }
