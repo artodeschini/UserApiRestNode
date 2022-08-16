@@ -12,6 +12,7 @@ npm install knex --save
 npm install mysql2 --save
 npm install uuid --save
 npm install jsonwebtoken --save
+npm install cores --save
 
 # esta descontinuado tentarei fazer sem ele
 # npm install body-parser --save
