@@ -1,5 +1,6 @@
 const knex = require("../database/connection");
 const bcrypt = require("bcrypt");
+const secret = require('../middlewere/screct');
 
 class User {
 
@@ -27,7 +28,7 @@ class User {
         } 
     }
 
-    async findByEmail(email) {
+    async findUserByEmail(email) {
         try {
             let result = await knex.select(['id', 'email', 'password','role', 'name']).where({'email': email}).table('users');
             if (result.length > 0) {
@@ -44,7 +45,7 @@ class User {
 
     async new(email, name, password) {
         try {
-            let hash = await bcrypt.hash(password, 10);
+            let hash = await bcrypt.hash(password + '', secret.salt);
             await knex.insert( {email, name, password: hash, role: 0}).table('users');
         } catch(err) {
             console.log(err);
@@ -53,7 +54,7 @@ class User {
 
     async findByEmail(email) {
         try {
-            let user = await knex.select('*').from('users').where({email: email});
+            let user = await knex.select(['email', 'password']).from('users').where({email: email});
             console.log(user);
             
             return user.length > 0;

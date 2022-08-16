@@ -1,5 +1,5 @@
 const User = require('../model/User');
-const PasswordToken = require('../model/PasswordToken');
+const PasswordToken = require('../model/PssswordToken');
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
 const secret = require('../middlewere/screct'); 
@@ -51,10 +51,16 @@ class UserController {
             return;
         }
 
-        await User.new(email, name, password);
+        try {
+            await User.new(email, name, password);
+            res.status(201);
+            return;
 
-        res.status(200);
-        res.send("chegou");
+        } catch (error) {
+            console.log(error);
+            res.status(500);
+            res.json({msg: 'erro ao criar usuario', error });
+        }        
     }
 
     async edit(req, res) {
@@ -122,17 +128,40 @@ class UserController {
     }
 
     async login(req, res) {
+        // console.log(req.body);
         let {email, password} = req.body;
 
-        const user = await this.findByEmail(email);
+        const user = await User.findUserByEmail(email);
 
         if (user != undefined) {
-            let result = await bcrypt.compare(password, user.password);
+            // bcrypt.compareSync(password, user.password);
+            let result = await bcrypt.compareSync(password, user.password);
 
             if (result) {
-                let token = jwt.sign({emai: user.email, role: user.role}, secret);
-                res.status(200);
-                res.json({'token': token});
+                // let token = jwt.sign({emai: user.email, role: user.role , secret);
+                jwt.sign(
+                    {
+                        id: user.id,
+                        email: user.email,
+                        nome: user.nome,
+                        role: user.role
+                    },
+                    secret.secret,
+                    {expiresIn: '1h'},
+                    //{expiresIn: '1m'},
+                    (error, token) => {
+                        if (error) {
+                            res.status(400);
+                            res.send({message:"Erro ao gerar o token"});
+                        } else {
+                            res.status(200);
+                            res.send({'token': token});
+                        }
+                    }
+                );
+
+                // res.status(200);
+                // res.json({'token': token});
 
             } else {
                 res.status(401);
