@@ -17,7 +17,7 @@ module.exports = function(req, res, next) {
     
                 } else {
                    
-                    console.log(decode);
+                    // console.log(decode);
                     // req.token = token;
                     // req.loggedUser = {'id': data.id, email: data.email};
                     if (decode.role == 1) {

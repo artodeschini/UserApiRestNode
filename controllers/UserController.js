@@ -118,9 +118,9 @@ class UserController {
 
         if (isValid.status) {
             await User.changePassword(password, isValid.token.user_id);
-            await PasswordToken.se
+            await PasswordToken.setUsed(isValid.token);
             res.status(200);
-            res.send('senha alterada');
+            res.send({msg: 'senha alterada'});
         } else {
             res.status(406);
             res.send({ msg: 'Token invalido'});
