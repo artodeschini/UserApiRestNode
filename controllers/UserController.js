@@ -28,17 +28,17 @@ class UserController {
     async create(req, res) {
         let {email, name, password} = req.body;
         //console.log(req.body);
-        if (req.body.email == undefined) {
+        if (email == undefined || email == '' || email == ' ') {
             res.status(400);
             res.json({err: "O email é obrigatorio"});
         }
 
-        if (req.body.name == undefined) {
+        if (name == undefined || name == '' || name == ' ') {
             res.status(400);
             res.json({err: "O nome é obrigatorio"});
         }
 
-        if (req.body.password == undefined) {
+        if (password == undefined || password == '' || password == ' ') {
             res.status(400);
             res.json({err: "O password é obrigatorio"});
         }

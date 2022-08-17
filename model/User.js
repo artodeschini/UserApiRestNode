@@ -109,6 +109,7 @@ class User {
 
             try {
                 await knex.delete().where({'id': id}).table('users');
+                return {status: true, error};
             } catch (error) {
                 return {status: false, error};
             }

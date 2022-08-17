@@ -1,8 +1,9 @@
-const bodyParser = require('body-parser');
-const express = require("express");
-const app = express();
-const router = require("./routes/routes");
-const cors = require('cors');
+let bodyParser = require('body-parser');
+let express = require("express");
+let app = express();
+let router = require("./routes/routes");
+let cors = require('cors')
+
 
  
 // parse application/x-www-form-urlencoded
@@ -10,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // app.use(express.urlencoded()); //Parse URL-encoded bodies
 
 // cors
-app.use(cors());
+app.use(cors())
 
 // parse application/json
 app.use(bodyParser.json())
