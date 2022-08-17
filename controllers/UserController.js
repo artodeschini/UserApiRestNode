@@ -64,7 +64,8 @@ class UserController {
     }
 
     async edit(req, res) {
-        let {id, nome, role, email} = req.body;
+        let id = req.params.id;
+        let {nome, role, email} = req.body;
 
         let result = await User.update(id, email, nome, role);
         if (result != undefined) {

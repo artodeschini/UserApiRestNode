@@ -10,7 +10,7 @@ router.post('/validate', AdminAuth, HomeController.validate);
 router.post('/users', AdminAuth, UserController.create);
 router.get('/users', AdminAuth, UserController.index);
 router.get('/users/:id',AdminAuth,  UserController.findUserById);
-router.put('/users', AdminAuth, UserController.edit);
+router.put('/users/:id', AdminAuth, UserController.edit);
 router.delete('/users/:id', AdminAuth, UserController.delete);
 router.post('/recoverpassword', UserController.recoverPassword);
 router.post('/changepassword', UserController.changePassword);
